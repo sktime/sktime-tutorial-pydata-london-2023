@@ -1,6 +1,6 @@
 ![](images/team.jpg)
 
-Welcome to the sktime tutorial at PyData Global 2022
+Welcome to the sktime tutorial at PyData London 2023
 ====================================================
 
 This tutorial is about [sktime] - a unified framework for machine learning with time series. sktime features various time series algorithms and modular tools for sktime is a widely used scikit-learn compatible library for learning with time series.
