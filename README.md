@@ -7,11 +7,11 @@ This tutorial is about [sktime] - a unified framework for machine learning with 
 
 `sktime` is easily extensible by anyone, and interoperable with the pydata/numfocus stack.
 
-This `sktime` tutorial explains TODO TOPIC
+This tutorial explains how to use sktime for three learning tasks with independent instances of time series: time series classification, regression, clustering. It also explains their close connection to time series distances, kernels, and time series alignment, and how to flexibly combine such estimators to classifiers, regressors, clusterers with custom distances/kernels or feature extraction steps.
 
 [sktime]: https://sktime.net
 
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/sktime/sktime-tutorial-pydata-london-2022/main)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/sktime/sktime-tutorial-pydata-london-2023/main)
 
 Also recommended:
 
@@ -37,7 +37,29 @@ Please let us know on the [sktime discord](https://discord.com/invite/54ACzaFsn7
 
 ## :bulb: Description
 
-TODO ABSTRACT
+In time series or sequence analysis, data often takes the form of multiple, independent observations of the same process, where one independent observation is an entire indexed series. Examples are sequential observations of a patient’s lab values, for many patients; or, spectrograms of independent samples (where the sequence is indexed by wavelength, not time).
+
+As with tabular data, common learning tasks associated with such data are:
+-	time series or sequence classification, where an algorithm is trained, on examples, to assign one of a set of labels to each time series or sequence. For instance, sick or healthy, for a patient; the type of substance, for a spectrogram
+-	time series or sequence regression, where an algorithm is trained to assign a real number to each time series or sequence. For instance, length of stay for a patient; the alcohol content as a percentage, for a spectrogram
+-	time series or sequence clustering, where sequences are assigned a cluster, or are arranged according to their similarity with each other
+
+Unlike with tabular data, sequence and shape information is crucial in the time series (or sequence) setting, and algorithms tend to be heavily based on feature extraction steps, distances or kernel functions that are specific to time series and sequences, and/or registration or alignment of the series.
+
+Of course, feature extraction followed by application of a “standard” tabular classifier etc constitutes an important kind of “simpler” baseline for above estimation tasks.
+
+sktime provides unified interfaces, and ample state-of-art functionality to flexibly construct estimators of the above kind, specifically:
+-	native implementations and direct interfaces to state-of-art references in time series classification, regression, and clustering, as “atomic” algorithms; e.g., k-means clusterer
+-	sequential pipeline functionality to combine these with time series transformers, also natively available under the unified sktime transformer interfaces ; e.g., feature extractors, feature union
+-	performant implementations of time series distances and time series kernels, exposed under the unified interface abstraction of “pairwise transformers”; e.g., time warping distance
+-	adaptors and compositors to use classical tabular transformers, distances, kernels in a time series setting; e.g., using the sklearn Gaussian RBF kernel on a flattened time series
+-	composition and combination estimators for time series distances and kernels, e.g., “n-th differenced distance” from ordinary and pairwise transformers; or, “mean sample kernels” 
+-	interfaces and adaptors for sequence alignment as a separate learning task, which can be used to obtain distances, kernels, and estimators
+
+The framework in sktime is highly customizable and composable; for instance, users can construct a custom time warping distance from an alignment algorithm, combine that with n-th differencing as pre-processing, and use this modified time warping distance in the k-nearest-neighbors algorithm for time series, all parameters and choices exposed and tunable via, say, grid search.
+
+sktime is also highly extensible, and provides guided extension templates for any of the involved types of objects (distances, kernels, aligners) or estimators (time series classification, regression, clustering), which allow users to implement custom components, ready for use with the above-mentioned composition patterns that sktime provides.
+
 
 ## :movie_camera: Other Video Tutorials:
 
@@ -71,7 +93,7 @@ To clone the repository locally:
 1. Create a python virtual environment:
 `conda create -y -n pydata_sktime python=3.9`
 2. Install required packages:
-`conda install -y -n pydata_sktime pip sktime seaborn jupyter pmdarima`
+`conda install -y -n pydata_sktime pip sktime seaborn jupyter dtw-python`
 3. Activate your environment:
 `conda activate pydata_sktime`
 4. If using jupyter: make the environment available in jupyter:
@@ -84,6 +106,6 @@ To clone the repository locally:
 2. Activate your environment:
 `source .venv/bin/activate`
 3. Install the requirements:
-`pip install sktime seaborn jupyter pmdarima`
+`pip install sktime seaborn jupyter dtw-python`
 4. If using jupyter: make the environment available in jupyter:
 `python -m ipykernel install --user --name=pydata_sktime`
